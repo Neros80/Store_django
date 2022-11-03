@@ -6,5 +6,12 @@
 <img src="{{ product.thumbnail.url}}" alt="{{ product.name }}" style="max-width: 250px;">
 <p> {{product.description}} </p>
 <p> {{product.stock}} </p>
+{% if user.is_authenticated %}
+<p>
+    <a href="{% url 'add-to-cart' %}">
+        Ajouter au panier
+    </a>
+</p>
+{% endif %}
 
 {% endblock %}

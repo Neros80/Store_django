@@ -1,8 +1,9 @@
 
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
+from django.urls import reverse
 
-from store.models import Product
+from store.models import Product, Cart, Order
 
 
 def index(request):
@@ -13,3 +14,17 @@ def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
     return render(request, 'store/detail.html', context={"product": product})
 
+def add_to_cart(request, slug):
+    user = request.user
+    product = get_object_or_404(Product, slug=slug)
+    cart, _  = Cart.object.get_or_create(user=user)
+    order, created = Order.object.get_or_create(user=user,
+                                                product=product)
+    
+    if created:
+        cart.orders.add(order)
+        cart.save()
+    else:
+        order.quantity += 1
+        order.save()
+    return redirect(reverse("product", kwargs={"slug":slug}))
