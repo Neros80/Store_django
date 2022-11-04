@@ -18,7 +18,7 @@ Mac:
 # Installation des modules requis 
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirement.txt
 ```
 
 # Démarrage du serveur
